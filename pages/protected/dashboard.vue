@@ -3,7 +3,7 @@
     <div>
       <p class="text-3xl font-extralight">Dashboard</p>
     </div>
-    <Tabs default-value="account" class="w-[400px]">
+    <Tabs default-value="account" class="w-full">
     <TabsList>
       <TabsTrigger value="account">
         Account
@@ -13,7 +13,7 @@
       </TabsTrigger>
     </TabsList>
     <TabsContent value="account">
-      Make changes to your account here.
+      <DashboardAccount />
     </TabsContent>
     <TabsContent value="password">
       Change your password here.
