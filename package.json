@@ -3,14 +3,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "prisma generate && nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.0.0",
     "@nuxtjs/tailwindcss": "^6.12.0",
+    "@prisma/client": "^5.13.0",
     "@sidebase/nuxt-auth": "^0.7.2",
     "@types/node": "^20.12.7",
     "@vueuse/core": "^10.9.0",
