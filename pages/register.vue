@@ -11,8 +11,64 @@ const Email = ref()
 const Password = ref()
 const ConfirmPassword = ref()
 
+const error = ref(false)
+const errorMessage = ref('')
+const success = ref(false)
+const loading = ref(false)
+const passwordError = ref(false)
+
+const clearConfirmPassword = () => {
+  ConfirmPassword.value = ''
+  passwordError.value = false
+}
+
+const checkPasswords = () => {
+  if (Password.value !== ConfirmPassword.value) {
+    passwordError.value = true
+  } else {
+    passwordError.value = false
+  }
+}
+
 
 async function signUpWithCredentials() {
+  loading.value = true
+  console.log(UserName.value, Email.value, Password.value, ConfirmPassword.value)
+  try {
+    const data = await createUserAccount(UserName.value, Email.value, Password.value, ConfirmPassword.value)
+    if(data.statusCode !== 200) {
+      error.value = true
+      errorMessage.value = data.statusMessage
+      loading.value = false
+      const interval = setInterval(() => {
+        error.value = false
+        clearInterval(interval)
+      }, 3000)
+    } else {
+      success.value = true
+      const interval = setInterval(() => {
+        success.value = false
+        clearInterval(interval)
+      },3000)
+    }
+    console.log('frontend data: ', data)
+    loading.value = false
+
+    Password.value = ''
+    ConfirmPassword.value = ''
+    UserName.value = ''
+    Email.value = ''
+  }
+  catch (e) {
+    error.value = true
+    errorMessage.value = 'Something went wrong. Please try again.'
+    loading.value = false
+    const interval = setInterval(() => {
+      error.value = false
+      clearInterval(interval)
+    }, 3000)
+  }
+
 }
 
 
@@ -20,7 +76,6 @@ definePageMeta({
   auth: {
     unauthenticatedOnly: true,
     navigateAuthenticatedTo: '/protected',
-
   }
 })
 
@@ -31,12 +86,17 @@ definePageMeta({
   <div class="flex flex-col gap-5 justify-center items-center h-screen">
     <section class="flex flex-col gap-5 border-l-2 border-black pl-8 py-5">
       <p class="text-3xl font-extralight">Register</p>
-      <form @submit.prevent="signUpWithCredentials" class="flex flex-col gap-5">
+      <form @submit.prevent="signUpWithCredentials()" class="flex flex-col gap-5">
         <Input v-model="UserName" type="text" name="username" placeholder="Full Name" required />
         <Input v-model="Email" type="email" name="email" placeholder="Email" required />
-        <Input v-model="Password" type="password" name="password" placeholder="Password" required />
-        <Input v-model="ConfirmPassword" type="password" name="password" placeholder="Confirm Password" required />
-        <Button>Create Account</Button>
+        <Input v-model="Password" @input="clearConfirmPassword()" type="password" name="password" placeholder="Password"
+          required />
+        <Input v-model="ConfirmPassword" @input="checkPasswords()" type="password" name="password"
+          placeholder="Confirm Password" required />
+        <p v-if="passwordError" class="text-red-500">{{ passwordError ? 'Passwords do not match' : '' }}</p>
+        <p v-if="error" class="text-red-500"> {{ errorMessage }}</p>
+        <p v-if="success" class="text-green-500">Account created successfully</p>
+        <Button :disabled="passwordError || loading">{{ loading ? 'Please Wait' : 'Create Account' }}</Button>
       </form>
       <Button @click="signInWithGithub()">SignUp With Github</Button>
       <Button as-child variant="link">

@@ -4,6 +4,8 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+
 
 const prisma = new PrismaClient();
 
@@ -32,39 +34,27 @@ export default NuxtAuthHandler({
         email: {},
         password: {},
       },
-      async authorize(credentials: any, req: any) {
+      async authorize(credentials: any) {
         let user = null;
 
-        console.log("Credentials: ", credentials)
-        // console.log("Request: ", req)
-
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        //   const res = await fetch("/api/auth/signin", {
-        //     method: 'POST',
-        //     body: JSON.stringify(credentials),
-        //     headers: { "Content-Type": "application/json" }
-        //   })
-        //   const user = await res.json()
+        // console.log("Credentials: ", credentials)
+      
         const Email = credentials?.email
-        console.log("Email: ", Email)
+        // console.log("Email: ", Email)
 
         user = await prisma.user.findFirst({
           where: { email: Email },
         });
+        const checkedPassword = bcrypt.compareSync(credentials?.password, (user as any)?.password)
         console.log("User: ", user);
 
         // If no error and we have user data, return it
-        if (!user) {
+        if (!user || !checkedPassword) {
           console.log("User not found 007");
         //   return user;
         }
         // Return null if user data could not be retrieved
-        else if (user){
+        else if (user && checkedPassword) {
           console.log("User found 007");
           return user
         }
