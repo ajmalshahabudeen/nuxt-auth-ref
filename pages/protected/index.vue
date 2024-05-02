@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div class="flex flex-col p-10 h-screen gap-5">
     <pre>{{ JSON.stringify({status, data}, null, 2) }}</pre>
-    <Button @click="signOut({callbackUrl: '/login'})">SignOut</Button>
+    <Button as-child class="w-56">
+      <NuxtLink to="/protected/dashboard">Dashboard</NuxtLink>
+    </Button>
+    <Button class="w-56" @click="signOut({callbackUrl: '/login'})">SignOut</Button>
   </div>
 </template>
 
