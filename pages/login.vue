@@ -6,6 +6,10 @@ async function signInWithGithub() {
   await signIn('github', { callbackUrl: '/protected' })
 }
 
+async function signInWithGoogle() {
+  await signIn('google', { callbackUrl: '/protected' })
+}
+
 const Email = ref()
 const Password = ref()
 
@@ -53,7 +57,14 @@ definePageMeta({
           {{ loading ? 'Please Wait' : 'Login' }}
         </Button>
       </form>
-      <Button @click="signInWithGithub()">SignIn With Github</Button>
+      <Button @click="signInWithGithub()">
+        <Icon name="uil:github" size="20" class="mr-2"/>
+        SignIn With Github
+      </Button>
+      <Button @click="signInWithGoogle()">
+        <Icon name="uil:google" size="20" class="mr-2"/>
+        SignIn With Google
+      </Button>
       <Button as-child variant="link">
         <NuxtLink to="/register">Create an Account</NuxtLink>
       </Button>

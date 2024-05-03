@@ -6,6 +6,10 @@ async function signInWithGithub() {
   await signIn('github', { callbackUrl: '/protected' })
 }
 
+async function signInWithGoogle() {
+  await signIn('google', { callbackUrl: '/protected' })
+}
+
 const UserName = ref()
 const Email = ref()
 const Password = ref()
@@ -36,7 +40,7 @@ async function signUpWithCredentials() {
   console.log(UserName.value, Email.value, Password.value, ConfirmPassword.value)
   try {
     const data = await createUserAccount(UserName.value, Email.value, Password.value, ConfirmPassword.value)
-    if(data.statusCode !== 200) {
+    if (data.statusCode !== 200) {
       error.value = true
       errorMessage.value = data.statusMessage
       loading.value = false
@@ -49,7 +53,7 @@ async function signUpWithCredentials() {
       const interval = setInterval(() => {
         success.value = false
         clearInterval(interval)
-      },3000)
+      }, 3000)
     }
     console.log('frontend data: ', data)
     loading.value = false
@@ -98,7 +102,14 @@ definePageMeta({
         <p v-if="success" class="text-green-500">Account created successfully</p>
         <Button :disabled="passwordError || loading">{{ loading ? 'Please Wait' : 'Create Account' }}</Button>
       </form>
-      <Button @click="signInWithGithub()">SignUp With Github</Button>
+      <Button @click="signInWithGithub()">
+        <Icon name="uil:github" size="20" class="mr-2" />
+        SignUp With Github
+      </Button>
+      <Button @click="signInWithGoogle()">
+        <Icon name="uil:google" size="20" class="mr-2" />
+        SignUp With Google
+      </Button>
       <Button as-child variant="link">
         <NuxtLink to="/login">Already Have an Account?</NuxtLink>
       </Button>

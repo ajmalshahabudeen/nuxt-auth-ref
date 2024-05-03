@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   css: ["@/assets/index.css"],
   devtools: { enabled: true },
-  modules: ["@sidebase/nuxt-auth", "@nuxtjs/tailwindcss", "shadcn-nuxt"],
+  modules: ["@sidebase/nuxt-auth", "@nuxtjs/tailwindcss", "shadcn-nuxt", "nuxt-icon"],
   auth: {
     globalAppMiddleware: true,
     provider: {
