@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
       }
     })
     if(userExist){
+      console.log("User already exists")
       return ({
         statusCode: 409,
         statusMessage: "User already exists"
@@ -41,6 +42,7 @@ export default defineEventHandler(async (event) => {
             password: hashedPassword,
           }
         })
+        console.log("User created")
         return ({
           statusCode: 200,
           statusMessage: "Success"
@@ -48,6 +50,7 @@ export default defineEventHandler(async (event) => {
       }
       catch(error) {
         console.log(error)
+        console.log("Internal Server Error When Creating User")
         return ({
           statusCode: 500,
           statusMessage: "Internal Server Error"
@@ -57,6 +60,7 @@ export default defineEventHandler(async (event) => {
   }
   catch(error) {
     console.log(error)
+    console.log("Internal Server Error When finding User Exist")
     return ({
       statusCode: 500,
       statusMessage: "Internal Server Error"
