@@ -12,3 +12,11 @@ export async function createUserAccount(UserName: string, Email: string, Passwor
   console.log('User Created: ', data)
   return data
 }
+
+export async function getUsers() {
+
+  const data = await $fetch('/api/dashboard/User', {
+    method: 'GET',
+  })
+  return await data
+}

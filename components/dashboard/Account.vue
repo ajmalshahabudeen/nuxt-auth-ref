@@ -1,7 +1,6 @@
 <template>
   <div class="flex">
-    <Table class="w-full">
-      <TableCaption>A list of your recent invoices.</TableCaption>
+    <Table class="w-full" v-if="data">
       <TableHeader>
         <TableRow>
           <TableHead>Sl No.</TableHead>
@@ -67,6 +66,7 @@
         </TableRow>
       </TableBody>
     </Table>
+    <p v-else class="text-red-500">You are not an Admin to view this Data</p>
   </div>
 </template>
 
@@ -81,8 +81,12 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-const data = await getAccounts()
-console.log(data)
+const data = ref()
+onMounted(async () => {
+  const result = await getAccounts()
+  data.value = (result as any).data
+})
+// console.log(data)
 
 </script>
 

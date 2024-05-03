@@ -4,21 +4,21 @@
       <p class="text-3xl font-extralight">Dashboard</p>
     </div>
     <Tabs default-value="account" class="w-full">
-    <TabsList>
-      <TabsTrigger value="account">
-        Account
-      </TabsTrigger>
-      <TabsTrigger value="password">
-        Password
-      </TabsTrigger>
-    </TabsList>
-    <TabsContent value="account">
-      <DashboardAccount />
-    </TabsContent>
-    <TabsContent value="password">
-      Change your password here.
-    </TabsContent>
-  </Tabs>
+      <TabsList class="px-10 mb-10">
+        <TabsTrigger class="px-10" value="account">
+          Account
+        </TabsTrigger>
+        <TabsTrigger class="px-10" value="user">
+          User
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">
+        <DashboardAccount />
+      </TabsContent>
+      <TabsContent value="user">
+        <DashboardUser />
+      </TabsContent>
+    </Tabs>
   </div>
 </template>
 
@@ -26,6 +26,4 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 </script>
 
-<style>
-
-</style>
+<style></style>

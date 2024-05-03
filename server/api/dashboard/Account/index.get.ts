@@ -18,11 +18,18 @@ export default defineEventHandler(async (event) => {
 
       if (!CheckAdmin?.admin) {
         console.log("Not Admin");
-        return ("Nice try. You're not an admin");
+        return ({
+          statusCode: 401,
+          statusMessage: "Nice try. You're not an admin"
+        });
       } else if (CheckAdmin?.admin) {
         try {
           const users = await prisma.account.findMany();
-          return users;
+          return ({
+            statusCode: 200,
+            statusMessage: "Success",
+            data: users
+          });
         } catch (error) {
           console.log(error);
           return error;

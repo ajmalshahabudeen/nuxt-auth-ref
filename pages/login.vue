@@ -10,15 +10,18 @@ const Email = ref()
 const Password = ref()
 
 const InvalidCredentials = ref(false)
+const loading = ref(false)
 
 
 async function signInWithCredentials() {
+  loading.value = true
   const data = await signIn('credentials', { email: Email.value, password: Password.value, redirect: false }, { callbackUrl: '/protected' })
   if (data?.error) {
     // Do your custom error handling here
     InvalidCredentials.value = true
     const interval = setInterval(() => {
       InvalidCredentials.value = false
+      loading.value = false
       clearInterval(interval)
     }, 3000)
   } else {
@@ -46,7 +49,9 @@ definePageMeta({
         <Input v-model="Email" type="email" name="email" placeholder="Email" required />
         <Input v-model="Password" type="password" name="password" placeholder="Password" required />
         <p v-if="InvalidCredentials" class="text-red-500">Invalid Credentials</p>
-        <Button :disabled="InvalidCredentials">SignIn With Credentials</Button>
+        <Button :disabled="InvalidCredentials">
+          {{ loading ? 'Please Wait' : 'Login' }}
+        </Button>
       </form>
       <Button @click="signInWithGithub()">SignIn With Github</Button>
       <Button as-child variant="link">
